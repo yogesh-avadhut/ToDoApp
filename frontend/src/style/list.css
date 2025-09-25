@@ -1,6 +1,6 @@
 .task-list{
     display: grid;
-    gap: 10px;
+    gap: 5px;
     list-style: none;
     padding: 0;
     margin: 20;
@@ -11,14 +11,14 @@
     font-weight: bold;
     padding: 10px;
     border: 1px solid #ccc;
-    background-color: #f0f0f0;
+    background-color: #40bdef32;
 
 }
 
 .list-item{
     padding: 10px;
     border: 1px solid #ccc;
-    background-color: #f0f0f0;
+    background-color: #40bdef16;
 }
 .delete-item{
     width:50%;
@@ -60,4 +60,8 @@
 .list-container{
     margin-left: 20px;
     margin-right: 20px;
+}
+
+.heading-list{
+    color: #22a7da;
 }

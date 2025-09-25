@@ -80,7 +80,7 @@ const deleteMultiple= async ()=>{
 
     return (
         <div className="list-container">
-            <h1>list todo</h1>
+            <h1 className="heading-list">📋 ToDo List</h1>
             <button  onClick={deleteMultiple}  className="delete-item delete-multiple">delete</button>
             <ul className="task-list">
                 <li className="list-header" ><input onChange={selectall} type="checkbox" /></li>

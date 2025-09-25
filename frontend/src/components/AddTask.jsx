@@ -29,11 +29,11 @@ if(result){
 
     return (
         <div className="container">
-            <h1>Add New Task </h1>
-                <label className='label' htmlFor="">Title</label>
-                <input onChange={(event)=> setTaskData({...taskData, title:event.target.value})} type="text" name="Title" placeholder="enter task title" />
-                <label className='label' htmlFor="">Description</label>
-                <textarea onChange={(event)=> setTaskData({...taskData, description:event.target.value})} name="description" placeholder="enter task description" />
+            <h1>📝 Add New Task </h1>
+                <label className='label' htmlFor="Title">Title</label>
+                <input onChange={(event)=> setTaskData({...taskData, title:event.target.value})} type="text" name="Title" placeholder="enter task title" id='Title'/>
+                <label className='label' htmlFor="Description">Description</label>
+                <textarea onChange={(event)=> setTaskData({...taskData, description:event.target.value})} name="description" placeholder="enter task description" id='Description'/>
                 <button onClick={handlesubmit} className="submit">Add New Task </button>
         </div>
     )
