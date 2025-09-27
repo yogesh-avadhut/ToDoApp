@@ -1,14 +1,25 @@
 import e from "express";
-import { connection, collectionName } from "./dbconfig.js"
 const app = e();
+
+
+
+
+
+import { connection, collectionName, collectionName2 } from "./dbconfig.js";
 import cors from "cors";
 import { ObjectId } from "mongodb";
+import jwt from 'jsonwebtoken';
+
+
+
+
+
 
 app.use(e.json());
 app.use(cors());
 app.post("/add-task", async (req, resp) => {
     const db = await connection();
-    const collection = await db.collection(collectionName);
+    const collection = db.collection(collectionName);
     const result = await collection.insertOne(req.body);
     if (result) {
         resp.send({ message: "new task added ...", success: true, result })
@@ -22,7 +33,7 @@ app.post("/add-task", async (req, resp) => {
 //get all tasks 
 app.get("/tasks", async (req, resp) => {
     const db = await connection();
-    const collection = await db.collection(collectionName);
+    const collection = db.collection(collectionName);
     const result = await collection.find().toArray();
 
     if (result) {
@@ -37,7 +48,7 @@ app.get("/tasks", async (req, resp) => {
 app.delete("/delete/:id", async (req, resp) => {
     const db = await connection();
     const id = req.params.id
-    const collection = await db.collection(collectionName);
+    const collection = db.collection(collectionName);
     const result = await collection.deleteOne({ _id: new ObjectId(id) })
 
     if (result) {
@@ -55,12 +66,12 @@ app.delete("/delete-multiple", async (req, resp) => {
     const db = await connection();
     const ids = req.body
     const deleteTaskIds = ids.map((item) => new ObjectId(item))
-    const collection = await db.collection(collectionName);
-    
+    const collection = db.collection(collectionName);
+
     const result = await collection.deleteMany({ _id: { $in: deleteTaskIds } })
 
     if (result) {
-        resp.send({ message: 'multiple task deleted', success: true , result})
+        resp.send({ message: 'multiple task deleted', success: true, result })
     }
     else {
         resp.send({ message: 'multiple delete failed', success: false })
@@ -76,7 +87,7 @@ app.delete("/delete-multiple", async (req, resp) => {
 //get task by id 
 app.get("/task/:id", async (req, resp) => {
     const db = await connection();
-    const collection = await db.collection(collectionName);
+    const collection = db.collection(collectionName);
     const id = req.params.id
     const result = await collection.findOne({ _id: new ObjectId(id) })
 
@@ -99,7 +110,7 @@ app.put("/update-task", async (req, resp) => {
         { _id: new ObjectId(_id) },
         { $set: fields }
     );
-    
+
     if (result) {
         resp.send({ message: 'task list updated', success: true, result })
     }
@@ -110,7 +121,43 @@ app.put("/update-task", async (req, resp) => {
 
 
 
+// signup api 
 
+app.post("/signup", async (req, resp) => {
+    const userData = req.body;
+
+    if (userData.email && userData.password) {
+
+        const db = await connection()
+        const collection = db.collection(collectionName2)
+        const result = await collection.insertOne(userData)
+        if (result) {
+            jwt.sign(userData, 'Google', { expiresIn: '5d' }, (error, token) => {
+
+                if (error) {
+                    return resp.send({
+                        success: false,
+                        message: "Token generation failed"
+                    });
+                }
+                resp.send({
+                    success: true,
+                    message: "signup done",
+                    token
+                });
+            });
+        } 
+        
+        else {
+            resp.send({
+                success: false,
+                message: "signup Failed",
+
+            })
+        }
+    }
+
+})
 
 
 
