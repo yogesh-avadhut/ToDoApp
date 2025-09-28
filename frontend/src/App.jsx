@@ -8,6 +8,7 @@ import Login from './components/Login'
 import List from './components/List'
 import UpdateTask from './components/UpdateTask'
 import Footer from './components/Footer'
+import Protected from './components/Protected'
 
 
 function App() {
@@ -16,12 +17,13 @@ function App() {
       <NavBar />
 
       <Routes>
-        <Route path='/' element={<List />} />
-        <Route path='/add' element={<AddTask />} />
+
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/update/:id' element={<UpdateTask />} />
 
+        <Route path='/add' element={<Protected> <AddTask /> </Protected>} />
+        <Route path='/' element={<Protected> <List /> </Protected>} />
+        <Route path='/update/:id' element={<Protected> <UpdateTask /> </Protected>} />
       </Routes>
 
       <Footer />

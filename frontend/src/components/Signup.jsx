@@ -1,15 +1,40 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../style/AddTask.css'
-import { useNavigate,Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 function Signup() {
 
 
     const [userData, SetUserData] = useState();
+    const navigate = useNavigate();
 
-    const handlesubmit = ()=>{
-        console.log(userData)
+    useEffect(() => {
+        if (localStorage.getItem('login')) {
+            navigate('/')
+        }
+    })
+
+    const handleSignup = async () => {
+        let result = await fetch('http://localhost:3200/signup', {
+            method: "Post",
+            body: JSON.stringify(userData),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        result = await result.json()
+
+        if (result.success) {
+            document.cookie = "token=" + result.token;
+            localStorage.setItem('login', userData.email)
+            window.dispatchEvent(new Event("storage"));
+            navigate('/')
+        }
+        else {
+            alert("please insert valid inputs")
+        }
+
     }
 
     return (
@@ -30,8 +55,8 @@ function Signup() {
                 onChange={(event) => SetUserData({ ...userData, password: event.target.value })}
                 type="text" name="Password" placeholder="enter task password" id='Password' />
 
-            <button onClick={()=> handlesubmit()} className="submit">Sign up </button>
-            <Link className='link' to="/Login">Login</Link>
+            <button onClick={() => handleSignup()} className="submit">Sign up </button>
+            <Link className='link' to="/Login"> Already have an account?  👆 Click Here to Login</Link>
         </div>
     )
 }

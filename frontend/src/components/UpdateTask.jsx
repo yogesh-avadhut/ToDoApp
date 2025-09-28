@@ -46,7 +46,7 @@ function UpdateTask() {
 
     return (
         <div className="container">
-            <h1>Update Task </h1>
+            <h1> 📑 Update Task </h1>
             <label className='label' htmlFor="title">Title</label>
             <input value={taskData.title} onChange={(event) => setTaskData({ ...taskData, title: event.target.value })} type="text" name="Title" placeholder="enter task title" id='title' />
             <label className='label' htmlFor="description">Description</label>
